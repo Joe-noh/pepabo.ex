@@ -1,7 +1,15 @@
 defmodule StackServerTest do
   use ExUnit.Case
 
-  test "the truth" do
-    assert 1 + 1 == 2
+  setup do
+    {:ok, pid} = StackServer.start_link
+
+    {:ok, %{pid: pid}}
+  end
+
+  test "push an item", c do
+    StackServer.push(c.pid, :item)
+
+    assert StackServer.pop(c.pid) == :item
   end
 end
