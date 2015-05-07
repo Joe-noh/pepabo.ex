@@ -2,7 +2,7 @@ defmodule StackServerTest do
   use ExUnit.Case
 
   setup do
-    {:ok, pid} = StackServer.start_link
+    {:ok, pid} = StackServer.start_link(max_length: 5)
 
     {:ok, %{pid: pid}}
   end
@@ -33,5 +33,13 @@ defmodule StackServerTest do
 
   test "pop returns {:error, :empty} when stack is empty", c do
     assert StackServer.pop(c.pid) == {:error, :empty}
+  end
+
+  test "push returns {:error, :overflow} when stack is full", c do
+    Enum.each 1..5, fn _ ->
+      assert StackServer.push(c.pid, :item) == :ok
+    end
+
+    assert StackServer.push(c.pid, :item) == {:error, :overflow}
   end
 end
