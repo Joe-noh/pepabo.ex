@@ -10,6 +10,28 @@ defmodule StackServerTest do
   test "push an item", c do
     StackServer.push(c.pid, :item)
 
-    assert StackServer.pop(c.pid) == :item
+    assert StackServer.pop(c.pid) == {:ok, :item}
+  end
+
+  test "get stack as a list", c do
+    assert StackServer.to_list(c.pid) == {:ok, []}
+
+    StackServer.push(c.pid, :item1)
+    StackServer.push(c.pid, :item2)
+
+    assert StackServer.to_list(c.pid) == {:ok, [:item2, :item1]}
+  end
+
+  test "clear the stack", c do
+    StackServer.push(c.pid, :item)
+    StackServer.push(c.pid, :item)
+
+    StackServer.clear(c.pid)
+
+    assert StackServer.to_list(c.pid) == {:ok, []}
+  end
+
+  test "pop returns {:error, :empty} when stack is empty", c do
+    assert StackServer.pop(c.pid) == {:error, :empty}
   end
 end
