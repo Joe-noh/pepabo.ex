@@ -31,6 +31,23 @@ defmodule StackServerTest do
     assert StackServer.to_list(c.pid) == {:ok, []}
   end
 
+  test "get stack length", c do
+    assert StackServer.length(c.pid) == {:ok, 0}
+
+    StackServer.push(c.pid, :item)
+
+    assert StackServer.length(c.pid) == {:ok, 1}
+
+    StackServer.push(c.pid, :item)
+    StackServer.push(c.pid, :item)
+
+    assert StackServer.length(c.pid) == {:ok, 3}
+
+    StackServer.clear(c.pid)
+
+    assert StackServer.length(c.pid) == {:ok, 0}
+  end
+
   test "pop returns {:error, :empty} when stack is empty", c do
     assert StackServer.pop(c.pid) == {:error, :empty}
   end

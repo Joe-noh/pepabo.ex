@@ -24,6 +24,10 @@ defmodule StackServer do
     GenServer.call(pid, :to_list)
   end
 
+  def length(pid) do
+    GenServer.call(pid, :length)
+  end
+
   ### GenServer callbacks
 
   def init(opts) do
@@ -55,5 +59,9 @@ defmodule StackServer do
 
   def handle_call(:to_list, _from, state) do
     {:reply, {:ok, state.stack}, state}
+  end
+
+  def handle_call(:length, _from, state) do
+    {:reply, {:ok, state.length}, state}
   end
 end
