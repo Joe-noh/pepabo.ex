@@ -1,8 +1,11 @@
 defmodule StackServer do
   use GenServer
+  alias __MODULE__, as: S
+
+  defstruct stack: [], length: 0
 
   def start_link do
-    GenServer.start_link(__MODULE__, [])
+    GenServer.start_link(S, %S{})
   end
 
   def push(pid, elem) do
@@ -23,23 +26,23 @@ defmodule StackServer do
 
   ### GenServer callbacks
 
-  def handle_cast({:push, elem}, stack) do
-    {:noreply, [elem | stack]}
+  def handle_cast({:push, elem}, state = %S{stack: stack, length: length}) do
+    {:noreply, %S{state | stack: [elem | stack], length: length+1}}
   end
 
   def handle_cast(:clear, _stack) do
-    {:noreply, []}
+    {:noreply, %S{}}
   end
 
-  def handle_call(:pop, _from, []) do
-    {:reply, {:error, :empty}, []}
+  def handle_call(:pop, _from, state = %S{stack: []}) do
+    {:reply, {:error, :empty}, state}
   end
 
-  def handle_call(:pop, _from, [head | rest]) do
-    {:reply, {:ok, head}, rest}
+  def handle_call(:pop, _from, state = %S{stack: [head | rest], length: length}) do
+    {:reply, {:ok, head}, %S{state | stack: rest, length: length-1}}
   end
 
-  def handle_call(:to_list, _from, stack) do
-    {:reply, {:ok, stack}, stack}
+  def handle_call(:to_list, _from, state) do
+    {:reply, {:ok, state.stack}, state}
   end
 end
