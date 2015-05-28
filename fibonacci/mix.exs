@@ -28,6 +28,10 @@ defmodule Fibonacci.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    []
+    latest = ">= 0.0.0"
+    [
+      {:ex_doc,  latest, only: :docs},
+      {:earmark, latest, only: :docs}
+    ]
   end
 end
