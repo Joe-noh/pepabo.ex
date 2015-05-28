@@ -1,4 +1,12 @@
 defmodule Fibonacci do
+  @moduledoc """
+  フィボナッチなモジュールだよ
+
+  * みんなで
+  * 一緒に
+  * フィボナッチ！
+  """
+
   use Application
 
   @server Fibonacci.Server
@@ -14,6 +22,14 @@ defmodule Fibonacci do
     Supervisor.start_link(children, opts)
   end
 
+  @doc """
+  次のフィボナッチ数を返す
+
+      iex> Fibonacci.next
+      0
+      iex> Fibonacci.next
+      1
+  """
   def next do
     Fibonacci.Server.next(@server)
   end
