@@ -2,7 +2,7 @@ defmodule Fibonacci.Server do
   use GenServer
 
   def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, [1, 1], opts)
+    GenServer.start_link(__MODULE__, [0, 1], opts)
   end
 
   def next(pid) do
