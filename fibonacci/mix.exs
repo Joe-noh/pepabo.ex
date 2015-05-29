@@ -31,7 +31,8 @@ defmodule Fibonacci.Mixfile do
     latest = ">= 0.0.0"
     [
       {:ex_doc,  latest, only: :docs},
-      {:earmark, latest, only: :docs}
+      {:earmark, latest, only: :docs},
+      {:dialyze, latest, only: :dev}
     ]
   end
 end

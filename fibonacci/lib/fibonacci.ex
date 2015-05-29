@@ -30,6 +30,7 @@ defmodule Fibonacci do
       iex> Fibonacci.next
       1
   """
+  @spec next :: integer | no_return
   def next do
     Fibonacci.Server.next(@server)
   end
